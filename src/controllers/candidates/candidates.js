@@ -1,16 +1,32 @@
 import {
   createCandidate,
   getCandidate,
+  getCandidateByField,
   getCandidates,
   updateCandidate,
   deleteCandidate
 } from '../../services/candidates';
-  
+
+import {
+  enrollSpeaker
+} from '../../services/speakers';
+
 export const create = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    const result = await createCandidate({ name, email, password });
-    res.status(200).json({ message: 'Success' });
+    const { name, email, password, audio } = req.body;
+    const userData = await getCandidateByField({ field: 'email', value: email });
+    if (!userData) {
+      const candidateResult = await createCandidate({ name, email, password, audio });
+      if (audio) {
+        const candidate = await getCandidateByField({ field: 'email', value: email });
+        if (candidate && candidate.id) {
+          const enrollmentResult = await enrollSpeaker({ audio: audio, id: candidate.id });
+        }
+      }
+      res.status(200).json({ message: 'Success' });
+    } else {
+      res.status(400).json({ message: 'Candidate already exists!' });
+    }
   } catch(err) {
     res.status(500).json({ message: 'Failure', error: err });
   }

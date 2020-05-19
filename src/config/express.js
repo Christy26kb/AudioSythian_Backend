@@ -19,11 +19,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // IP of frontend.
-const whiteList = ['https://0.0.0.0:8080'];
+const whiteList = ['https://0.0.0.0:8080', 'http://0.0.0.0:8080'];
 const corsOptionsDelegate = (req, callback) => {
  let corsOptions;
  if (whiteList.indexOf(req.header("Origin")) !== -1) {
-   corsOptions = { origin: true };
+   corsOptions = {
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 200 };
  } else {
    corsOptions = { origin: false };
  }

@@ -3,9 +3,9 @@ import { mutations, queries } from '../../config/database';
 
 export const createCandidate = async (params) => {
   try {
-    const { name, email, password } = params;
-    const sql = `INSERT INTO candidates(name, email, password) VALUES(?, ?, ?)`;
-    const sqlParams = [name, email, password];
+    const { name, email, password, audio = null } = params;
+    const sql = `INSERT INTO candidates(name, email, password, audio_path) VALUES(?, ?, ?, ?)`;
+    const sqlParams = [name, email, password, audio];
     return await mutations({ sql, sqlParams });
   } catch (err) {
     console.log('Failed to create candidate', err);

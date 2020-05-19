@@ -10,9 +10,9 @@ export const login = async (req, res) => {
       // Admin login
       data = await getAdminUserByField({ field: 'email', value: email });
       if (data) {
-        const { email, name, id } = data;
+        const { email, name, id, password } = data;
         if (data.password === password) {
-          res.status(200).json({ message: 'Login Successful', result: { email, name, id } });
+          res.status(200).json({ message: 'Login Successful', result: { email, name, id, password } });
         }
         else {
           res.status(400).json({ message: 'Password does not match' });

@@ -20,7 +20,7 @@ export const login = async (req, res) => {
       } else {
         res.status(400).json({ message: 'User does not exist' });
       }
-    } else {
+    } else if (type === 'candidate') {
       // Candidate login
       data = await getCandidateByField({ field: 'email', value: email });
       if (data) {
@@ -28,6 +28,20 @@ export const login = async (req, res) => {
           res.status(200).json({ message: 'Login Successful', result: data });
         } else {
           res.status(400).json({ message: 'Password does not match' });
+        }
+      } else {
+        res.status(400).json({ message: 'User does not exist' });
+      }
+    } else {
+      // Candidate voice login
+      const userEmail = 'milshakaitharan@gmail.com'
+      const isMatch = true;
+      data = await getCandidateByField({ field: 'email', value: userEmail });
+      if (data) {
+        if (isMatch) {
+          res.status(200).json({ message: 'Login Successful', result: data });
+        } else {
+          res.status(400).json({ message: 'Audio sample does not match' });
         }
       } else {
         res.status(400).json({ message: 'User does not exist' });

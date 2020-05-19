@@ -17,12 +17,6 @@ export const create = async (req, res) => {
     const userData = await getCandidateByField({ field: 'email', value: email });
     if (!userData) {
       const candidateResult = await createCandidate({ name, email, password, audio });
-      if (audio) {
-        const candidate = await getCandidateByField({ field: 'email', value: email });
-        if (candidate && candidate.id) {
-          const enrollmentResult = await enrollSpeaker({ audio: audio, id: candidate.id });
-        }
-      }
       res.status(200).json({ message: 'Success' });
     } else {
       res.status(400).json({ message: 'Candidate already exists!' });

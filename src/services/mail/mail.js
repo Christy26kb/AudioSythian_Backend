@@ -20,7 +20,8 @@ export const sendMail = async (params) => {
         from: 'Mock Test Runner',
         to: `${adminEmail}, ${candidateEmail}`,
         subject: 'Exam completed successfully',
-        text: `Successfully completed the examination.
+        text: `${candidateEmail ? `User ${candidateEmail}` : ''}
+          Successfully completed the examination.
           Score ${candidateScore} out of ${totalScore}.
           QuestionSet id: ${questionSet}
           Our team will be in touch with you.`

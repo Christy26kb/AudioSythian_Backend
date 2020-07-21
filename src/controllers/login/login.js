@@ -3,7 +3,8 @@ import { getAdminUserByField } from '../../services/admin';
 
 export const login = async (req, res) => {
   try {
-    const { type, email, password } = req.body;
+    const { type, email } = req.body;
+    const clientPassword = req.body.password;
     let data;
     
     if (type === 'admin') {
@@ -11,7 +12,7 @@ export const login = async (req, res) => {
       data = await getAdminUserByField({ field: 'email', value: email });
       if (data) {
         const { email, name, id, password } = data;
-        if (data.password === password) {
+        if (data.password === clientPassword) {
           res.status(200).json({ message: 'Login Successful', result: { email, name, id, password } });
         }
         else {
@@ -24,7 +25,7 @@ export const login = async (req, res) => {
       // Candidate login
       data = await getCandidateByField({ field: 'email', value: email });
       if (data) {
-        if (data.password === password) {
+        if (data.password === clientPassword) {
           res.status(200).json({ message: 'Login Successful', result: data });
         } else {
           res.status(400).json({ message: 'Password does not match' });

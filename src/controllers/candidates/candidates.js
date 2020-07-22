@@ -16,7 +16,7 @@ export const create = async (req, res) => {
     const { name, email, password, audio } = req.body;
     const userData = await getCandidateByField({ field: 'email', value: email });
     if (!userData) {
-      const candidateResult = await createCandidate({ name, email, password, audio: null });
+      const candidateResult = await createCandidate({ name, email, password, audio: audio });
       res.status(200).json({ message: 'Success' });
     } else {
       res.status(400).json({ message: 'Candidate already exists!' });
